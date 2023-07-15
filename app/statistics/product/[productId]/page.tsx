@@ -1,5 +1,5 @@
 'use client'
-
+import { usePathname, redirect } from "next/navigation"
 import { useQuery } from "@tanstack/react-query"
 import { useTheme } from "next-themes"
 import {
@@ -12,7 +12,6 @@ import {
     Legend,
   } from 'chart.js/auto'
 import { Bar } from 'react-chartjs-2'
-import Link from "next/link"
 import { truncateString, percentageOfTotal } from "@/components/utils"
 
 // Activate Chart.JS components
@@ -25,10 +24,19 @@ ChartJS.register(
     Legend
 )
 
-export default function statsPage(){
+
+export default function productPage(){
+    const path = usePathname()
+    const productID = path.split('/')[3]
+
+    // Return to statistics page if productID is not a number, or, in range
+    if (parseInt(productID) < 0 || parseInt(productID) > 8 || isNaN(parseInt(productID))){
+        redirect('/statistics')
+    }
+
     const { setTheme, theme } = useTheme()
 
-    const fetchAllData = async () => {
+    const fetchProductData = async () => {
         try {
             const res = await fetch('/api/handleData',
                 {
@@ -49,8 +57,8 @@ export default function statsPage(){
 
     // Fetches and handles state management of data
     const {data, isLoading, error} = useQuery({
-        queryKey: ['allData'],
-        queryFn: fetchAllData,
+        queryKey: ['productData'],
+        queryFn: fetchProductData,
     });
 
     // @TODO: Replace with loading component
@@ -67,26 +75,25 @@ export default function statsPage(){
         )
     }
 
-    // All Products Chart
-    const allProductsData = {
-        labels: Object.values(data?.data?.aggregations?.product?.product?.buckets).map((item:any) => truncateString(item?.key, 20)),
+    // Product Chart
+    const productData = {
+        labels: Object.values(data?.data?.aggregations?.product?.product?.buckets[productID]['sub_product.raw']?.buckets).map((item:any) => truncateString(item?.key, 20)),
         datasets: [
             {
-                data: Object.values(data?.data?.aggregations?.product?.product?.buckets).map((item:any) => item?.doc_count),
+                data: Object.values(data?.data?.aggregations?.product?.product?.buckets[productID]['sub_product.raw']?.buckets).map((item:any) => item?.doc_count),
                 backgroundColor: (theme === 'light' ? ['lightgreen', 'green', 'gray',] : ['lightblue', 'blue', 'white',]),
             }, 
         ],
     }
-    const allProductsOptions = {
+    const productOptions = {
         responsive: true,
-        maintainAspectRatio: false,
         plugins: {
             legend: {
                 display: false,
             },
             title: {
                 display: true,
-                text: 'Statistics from All Products',
+                text: `Statistics from Product ${productID}` ,
             },
             subtitle: {
                 display: true,
@@ -97,40 +104,42 @@ export default function statsPage(){
             x: {
                 grid: {
                     color: (theme === 'light' ? 'lightgray' : 'rgba(246,250,244,0.5)')
-                }
+                },
+                beginAtZero: true,
             },
             y: {
                 grid: {
                     color: (theme === 'light' ? 'lightgray' : 'rgba(246,250,244,0.5)')
-                }
+                },
+                beginAtZero: true,
             }
         }
     }
 
     return(
         <>
-            <div id="stat-container" className="mx-4 md:mx-10 w-100">
+            <div id="product-container" className="mx-4 md:mx-10 w-100">
                 <div className="text-3xl font-extrabold md:text-4xl pt-5 pb-3">Statistics</div>
                 <div id="all-products" className="flex flex-col place-content-center w-full mb-20">
-                    <div className="text-xl font-bold leading-tight md:text-2xl">All Products</div>
-                    <p>Total: {data?.data?.hits?.total?.value}</p>
-                    <div className="flex flex-wrap justify-center h-[20rem] lg:h-[30rem] w-auto">
-                        <Bar data={allProductsData} options={allProductsOptions} className="max-w-3xl"/>
+                    <div className="text-xl font-bold leading-tight md:text-2xl">Product: {data?.data?.aggregations?.product?.product?.buckets[productID]?.key}.</div>
+                    <p>Total: {data?.data?.aggregations?.product?.product?.buckets[productID]?.doc_count}</p>
+                    <div className="flex flex-wrap justify-center">
+                        <Bar data={productData} options={productOptions} className="max-w-3xl"/>
                     </div>
                 </div>
                 <div className="flex flex-col flex-wrap mb-10">
-                    <p className="text-xl font-bold leading-tight md:text-2xl">Product Pages</p>
-                    <p className="text-lg italic underline underline-offset-4">By visiting any of the products below, you will see their sub-products.</p>
+                    <p className="text-xl font-bold leading-tight md:text-2xl">Sub-products.</p>
                     <ul>
-                        {Object.values(data?.data?.aggregations?.product?.product?.buckets).map((item:any, index:number) => 
+                        {Object.values(data?.data?.aggregations?.product?.product?.buckets[productID]['sub_product.raw']?.buckets).map((item:any, index:number) => 
                             <li key={index} id={index.toString()} className="my-4 flex flex-col flex-wrap">
-                                <Link href={`/statistics/product/${index}`}>{item?.key}.</Link>
+                                <p>{item?.key}.</p>
                                 <p className="ml-5">Document Count: {item?.doc_count}</p>
-                                <p className="ml-5">Percentage of Total: {percentageOfTotal(parseInt(data?.data?.hits?.total?.value), parseInt(item?.doc_count))}%</p>
+                                <p className="ml-5">Percentage of Total: {percentageOfTotal(parseInt(data?.data?.aggregations?.product?.product?.buckets[productID]?.doc_count), parseInt(item?.doc_count))}%</p>
                             </li>
                         )}
                     </ul>
                 </div>
+
             </div>
         </>
     )
