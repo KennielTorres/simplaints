@@ -1,17 +1,17 @@
 export type SiteConfig = typeof siteConfig
 
 export const siteConfig = {
-  name: "ForeC",
+  name: "Complaint Trends",
   description:
-    "Statistics of Consumer Complaints from the CFPB.",
+    "Analytics of Consumer Complaints from the CFPB.",
   mainNav: [
     {
       title: "Home",
       href: "/",
     },
     {
-      title: "Statistics",
-      href: "/statistics",
+      title: "Analytics",
+      href: "/analytics",
     },
   ],
   links: {

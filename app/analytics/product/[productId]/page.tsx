@@ -31,7 +31,7 @@ export default function productPage(){
 
     // Return to statistics page if productID is not a number, or, in range
     if (parseInt(productID) < 0 || parseInt(productID) > 8 || isNaN(parseInt(productID))){
-        redirect('/statistics')
+        redirect('/analytics')
     }
 
     const { setTheme, theme } = useTheme()
@@ -118,7 +118,7 @@ export default function productPage(){
 
     return(
         <>
-            <div id="product-container" className="mx-4 md:mx-10 w-100">
+            <section id="product-container" className="mx-4 md:mx-10 w-100">
                 <div className="text-3xl font-extrabold md:text-4xl pt-5 pb-3">Statistics</div>
                 <div id="all-products" className="flex flex-col place-content-center w-full mb-20">
                     <div className="text-xl font-bold leading-tight md:text-2xl">Product: {data?.data?.aggregations?.product?.product?.buckets[productID]?.key}.</div>
@@ -128,11 +128,11 @@ export default function productPage(){
                     </div>
                 </div>
                 <div className="flex flex-col flex-wrap mb-10">
-                    <p className="text-xl font-bold leading-tight md:text-2xl">Sub-products.</p>
+                    <p className="text-xl font-bold leading-tight md:text-2xl">Sub-products</p>
                     <ul>
                         {Object.values(data?.data?.aggregations?.product?.product?.buckets[productID]['sub_product.raw']?.buckets).map((item:any, index:number) => 
                             <li key={index} id={index.toString()} className="my-4 flex flex-col flex-wrap">
-                                <p>{item?.key}.</p>
+                                <p className="uppercase">{item?.key}.</p>
                                 <p className="ml-5">Document Count: {item?.doc_count}</p>
                                 <p className="ml-5">Percentage of Total: {percentageOfTotal(parseInt(data?.data?.aggregations?.product?.product?.buckets[productID]?.doc_count), parseInt(item?.doc_count))}%</p>
                             </li>
@@ -140,7 +140,7 @@ export default function productPage(){
                     </ul>
                 </div>
 
-            </div>
+            </section>
         </>
     )
 }

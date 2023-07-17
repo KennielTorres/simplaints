@@ -86,7 +86,7 @@ export default function statsPage(){
             },
             title: {
                 display: true,
-                text: 'Statistics from All Products',
+                text: 'All Products',
             },
             subtitle: {
                 display: true,
@@ -109,8 +109,8 @@ export default function statsPage(){
 
     return(
         <>
-            <div id="stat-container" className="mx-4 md:mx-10 w-100">
-                <div className="text-3xl font-extrabold md:text-4xl pt-5 pb-3">Statistics</div>
+            <section id="stat-container" className="mx-4 md:mx-10 w-100">
+                <div className="text-3xl font-extrabold md:text-4xl pt-5 pb-3">Analytics</div>
                 <div id="all-products" className="flex flex-col place-content-center w-full mb-20">
                     <div className="text-xl font-bold leading-tight md:text-2xl">All Products</div>
                     <p>Total: {data?.data?.hits?.total?.value}</p>
@@ -120,18 +120,18 @@ export default function statsPage(){
                 </div>
                 <div className="flex flex-col flex-wrap mb-10">
                     <p className="text-xl font-bold leading-tight md:text-2xl">Product Pages</p>
-                    <p className="text-lg italic underline underline-offset-4">By visiting any of the products below, you will see their sub-products.</p>
+                    <p className="text-lg text-muted-foreground">By visiting any of the products below, you will see their sub-products.</p>
                     <ul>
                         {Object.values(data?.data?.aggregations?.product?.product?.buckets).map((item:any, index:number) => 
                             <li key={index} id={index.toString()} className="my-4 flex flex-col flex-wrap">
-                                <Link href={`/statistics/product/${index}`}>{item?.key}.</Link>
+                                <Link href={`/analytics/product/${index}`} className="hover:text-green-500 uppercase transition-all">{item?.key}.</Link>
                                 <p className="ml-5">Document Count: {item?.doc_count}</p>
                                 <p className="ml-5">Percentage of Total: {percentageOfTotal(parseInt(data?.data?.hits?.total?.value), parseInt(item?.doc_count))}%</p>
                             </li>
                         )}
                     </ul>
                 </div>
-            </div>
+            </section>
         </>
     )
 }
