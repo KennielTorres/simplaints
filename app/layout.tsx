@@ -4,10 +4,10 @@ import { Metadata } from "next"
 import { siteConfig } from "@/config/site"
 import { fontSans } from "@/lib/fonts"
 import { cn } from "@/lib/utils"
+import { ReactQueryProvider } from "@/components/providers/react-query-provider"
 import { SiteHeader } from "@/components/site-header"
 import { TailwindIndicator } from "@/components/tailwind-indicator"
 import { ThemeProvider } from "@/components/theme-provider"
-import { ReactQueryProvider } from "@/components/providers/react-query-provider"
 
 export const metadata: Metadata = {
   title: {
