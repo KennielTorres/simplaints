@@ -44,7 +44,7 @@ export default function IndexPage() {
         <div className="border-b-slategray-700 mb-4 border-b"></div>
         <h2 className="font-semibold">About</h2>
         <p className="mb-4 ml-6">
-          Interested about the application? Find out what technologies it's
+          Interested about the application? Find out what technologies it is
           using.
         </p>
         <div className="mb-10 flex flex-col items-center md:items-baseline">
