@@ -13,7 +13,7 @@ import {
   } from 'chart.js/auto'
 import { Bar } from 'react-chartjs-2'
 import Link from "next/link"
-import { truncateString, percentageOfTotal } from "@/components/utils"
+import { truncateString, percentageOfTotal, currentYear } from "@/components/utils"
 
 // Activate Chart.JS components
 ChartJS.register(
@@ -110,7 +110,8 @@ export default function statsPage(){
     return(
         <>
             <section id="stat-container" className="mx-4 md:mx-10 w-100">
-                <div className="text-3xl font-extrabold md:text-4xl pt-5 pb-3">Analytics</div>
+                <div className="text-3xl font-extrabold md:text-4xl pt-5 pb-1">Analytics</div>
+                <p className="text-foreground-muted pb-3">Year: {currentYear()}</p>
                 <div id="all-products" className="flex flex-col place-content-center w-full mb-20">
                     <div className="text-xl font-bold leading-tight md:text-2xl">All Products</div>
                     <p>Total: {data?.data?.hits?.total?.value}</p>

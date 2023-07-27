@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
  
-export async function GET(request: Request) {
+export async function GET() {
     const currentISODate = new Date()
     const [currentDateOnly] = currentISODate.toISOString().split('T') // should this be on parent and sent on request body if we want it dynamic???
     const startDate = `${currentDateOnly.split('-')[0]}-01-01` // Defaults to January 1st, of current year

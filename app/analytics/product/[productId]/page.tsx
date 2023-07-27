@@ -12,7 +12,7 @@ import {
     Legend,
   } from 'chart.js/auto'
 import { Bar } from 'react-chartjs-2'
-import { truncateString, percentageOfTotal } from "@/components/utils"
+import { truncateString, percentageOfTotal, currentYear } from "@/components/utils"
 
 // Activate Chart.JS components
 ChartJS.register(
@@ -87,6 +87,7 @@ export default function productPage(){
     }
     const productOptions = {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
             legend: {
                 display: false,
@@ -119,11 +120,12 @@ export default function productPage(){
     return(
         <>
             <section id="product-container" className="mx-4 md:mx-10 w-100">
-                <div className="text-3xl font-extrabold md:text-4xl pt-5 pb-3">Statistics</div>
+                <div className="text-3xl font-extrabold md:text-4xl pt-5 pb-1">Analytics</div>
+                <p className="text-foreground-muted pb-3">Year: {currentYear()}</p>
                 <div id="all-products" className="flex flex-col place-content-center w-full mb-20">
                     <div className="text-xl font-bold leading-tight md:text-2xl">Product: {data?.data?.aggregations?.product?.product?.buckets[productID]?.key}.</div>
                     <p>Total: {data?.data?.aggregations?.product?.product?.buckets[productID]?.doc_count}</p>
-                    <div className="flex flex-wrap justify-center">
+                    <div className="flex flex-wrap justify-center h-[20rem] lg:h-[30rem] w-auto">
                         <Bar data={productData} options={productOptions} className="max-w-3xl"/>
                     </div>
                 </div>

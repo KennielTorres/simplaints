@@ -12,7 +12,7 @@ export default function IndexPage() {
           Consumer Complaints processed by the <a href="https://www.consumerfinance.gov/" className="text-green-500 hover:text-green-700" rel="noopener noreferrer" target="_blank">Consumer Financial 
           Protection Bureau</a> analyzed numerically and visually.
         </p>
-        <p className="text-lg max-w-[1000px]">Complaint Trends provides you with the raw data, percentages, and bar charts to help you visualize 
+        <p className="text-lg max-w-[1000px]">SimPlaints provides you with numeric data, percentages, and bar charts to help you visualize 
           and understand the processed consumer complaints. 
         </p>
       </div>

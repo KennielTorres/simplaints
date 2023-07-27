@@ -14,3 +14,12 @@ export function percentageOfTotal(total: number, value: number) {
     let result = ((value/total) * 100).toFixed(2) 
     return result
 }
+
+// Returns the current year
+export function currentYear() {
+    const currentISODate = new Date()
+    const [currentDateOnly] = currentISODate.toISOString().split('T')
+    const currentYear = currentDateOnly.split('-')[0]
+
+    return currentYear
+}
