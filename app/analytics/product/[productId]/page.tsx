@@ -23,7 +23,7 @@ import {
 // Activate Chart.JS components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
-export default function productPage() {
+export default function ProductPage() {
   const path = usePathname()
   const productID = path.split("/")[3]
 

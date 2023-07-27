@@ -23,7 +23,7 @@ import {
 // Activate Chart.JS components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
-export default function statsPage() {
+export default function AnalyticsPage() {
   const { setTheme, theme } = useTheme()
 
   const fetchAllData = async () => {
